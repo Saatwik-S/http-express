@@ -1,5 +1,5 @@
-const { handleDeleteRequestForTask, handleDeleteRequestForCompletedTasks } = require('../tasks/deleteTask');
-const { handlePatchRequestForTask } = require('../tasks/updateTask');
+const { handleDeleteRequestForTask, handleDeleteRequestForCompletedTasks } = require('../functions/tasks/deleteTask');
+const { handlePatchRequestForTask } = require('../functions/tasks/updateTask');
 
 const router = require('express').Router();
 router.delete('/completed', handleDeleteRequestForCompletedTasks);

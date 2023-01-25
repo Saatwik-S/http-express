@@ -1,3 +1,7 @@
+
+const { tasks } = require('../../tasks');
+
+
 /**
  * It takes an id and an object of data to be updated, and returns true if the task is updated
  * successfully
@@ -5,8 +9,6 @@
  * @param dataToBeUpdated - This is an object that contains the data that needs to be updated.
  * @returns task as the index
  */
-
-const { tasks } = require('../tasks');
 
 const updateTask = (id, dataToBeUpdated) => {
 

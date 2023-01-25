@@ -1,5 +1,5 @@
 
-const { tasks } = require('../tasks');
+const { tasks } = require('../../tasks');
 
 /**
  * It takes a taskInfo object, checks if it has a name property, and if it does, it adds it to the

@@ -1,5 +1,4 @@
-const { tasks } = require('../tasks');
-
+const { tasks } = require('../../tasks');
 /**
  * "If allTasks is true, return all tasks, otherwise, if id is a number, return the task with that id,
  * otherwise throw an error."

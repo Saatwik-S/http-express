@@ -1,5 +1,5 @@
-const { handlePostRequestForTask } = require('../tasks/addTask');
-const { handleGetRequestForTask } = require('../tasks/fetchTask');
+const { handlePostRequestForTask } = require('../functions/tasks/addTask');
+const { handleGetRequestForTask } = require('../functions/tasks/fetchTask');
 
 
 
