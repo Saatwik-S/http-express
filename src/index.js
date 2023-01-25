@@ -1,6 +1,6 @@
 const express = require('express');
-const tasksRouter = require('./routes/tasksRouter');
-const taskRouter = require('./routes/taskRouter');
+const tasksRouter = require('./routes/tasksRoutes');
+const taskRouter = require('./routes/taskRoutes');
 
 const app = express();
 
@@ -11,9 +11,9 @@ app.use((_, response, next) => {
 	response.set({'content-type': 'application/json'});
 	next();
 } );
-
-app.use('/task',  taskRouter);
 app.use('/tasks',tasksRouter);
+app.use('/task',  taskRouter);
+
 
 app.listen(3000, () => console.log('Started on port 3000'));
 

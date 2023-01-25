@@ -29,7 +29,7 @@ const addTask = (taskInfo) => {
 const handlePostRequestForTask = (request, response) => {
 	try {
 		const task = addTask(request.body);
-		response.send(task);
+		response.status(201).send(task);
 	}
 	catch (error) {
 		response.status(403).send(error.toString());

@@ -5,8 +5,11 @@ const { handleGetRequestForTask } = require('../functions/tasks/fetchTask');
 
 const router = require('express').Router();
 
-router.get('/', handleGetRequestForTask);
-router.get('/:id', handleGetRequestForTask),
-router.post('/', handlePostRequestForTask),
+router.route('/')
+	.get(handleGetRequestForTask)
+	.post(handlePostRequestForTask);
+router.get('/:id', handleGetRequestForTask);
 
 module.exports = router;
+
+
