@@ -1,9 +1,13 @@
-const { tasks } = require('../../tasks');
+const { tasks, updateObject } = require('../../tasks');
 
-
+/**
+ * 
+ * @param {Request} request 
+ * @param {Response} response 
+ */
 const handleDeleteRequestForCompletedTasks = (request, response) => {
 	try {
-
+		
 		deleteTask(undefined, true);
 
 		response.send('Task(s) Deleted');
@@ -43,7 +47,8 @@ const handleDeleteRequestForTask = (request, response) => {
 
 const deleteTask = (id, deleteCompletedTasks) => {
 	if (deleteCompletedTasks) {
-		tasks.map((element) => element.isCompleted ? element.isDeleted = true : undefined);
+		updateObject(tasks.filter(e => e.isCompleted === false));
+		//tasks.map((element) => element.isCompleted ? element.isDeleted = true : undefined);
 		return true;
 	}
 
@@ -56,7 +61,8 @@ const deleteTask = (id, deleteCompletedTasks) => {
 
 	const indexOfTask = tasks.findIndex(task => task.id === id);
 	if (indexOfTask === -1) throw new Error('Invalid Task ID Provided');
-	tasks[indexOfTask].isDeleted = true;
+	tasks.splice(indexOfTask, 1);
+	//tasks[indexOfTask].isDeleted = true;
 	return true;
 
 };

@@ -7,6 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.text());
+app.use((_, response, next) => {
+	response.set({'content-type': 'application/json'});
+	next();
+} );
+
 app.use('/task',  taskRouter);
 app.use('/tasks',tasksRouter);
 

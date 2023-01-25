@@ -1,8 +1,12 @@
 let tasks = [];
 
 const updateObject = (newObject) => {
-	tasks = newObject;
-	return tasks;
+	tasks.splice(0);
+	tasks.push(...newObject);
 };
 
-module.exports = {tasks, updateObject};
+let currentTaskId = 1;
+
+const getNewTaskID = () => currentTaskId++;
+
+module.exports = {tasks, updateObject, getNewTaskID};

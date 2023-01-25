@@ -1,5 +1,5 @@
 
-const { tasks } = require('../../tasks');
+const { tasks, getNewTaskID } = require('../../tasks');
 
 /**
  * It takes a taskInfo object, checks if it has a name property, and if it does, it adds it to the
@@ -11,7 +11,7 @@ const addTask = (taskInfo) => {
 	if (!taskInfo['name']) throw new Error('Missing Task Key');
 	if (taskInfo['name'].toString().length == 0) throw new Error('Task name missing');
 	tasks.push({
-		id: tasks.length + 1,
+		id: getNewTaskID(),
 		name: taskInfo['name'],
 		isCompleted: false,
 	});
