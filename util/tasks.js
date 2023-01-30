@@ -1,8 +1,8 @@
-let tasks = [];
+const tasks = [];
 
 const updateObject = (newObject) => {
-	tasks.splice(0);
-	tasks.push(...newObject);
+    tasks.splice(0);
+    tasks.push(...newObject);
 };
 
 let currentTaskId = 1;

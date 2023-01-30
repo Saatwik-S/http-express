@@ -1,14 +1,12 @@
-const { handlePostRequestForTask } = require('../functions/tasks/addTask');
-const { handleGetRequestForTask } = require('../functions/tasks/fetchTask');
-
-
-
+const controller = require('../controller/taskController');
 const router = require('express').Router();
 
 router.route('/')
-	.get(handleGetRequestForTask)
-	.post(handlePostRequestForTask);
-router.get('/:id', handleGetRequestForTask);
+    .get(controller.handleGetRequestForTask)
+    .post(controller.handlePostRequestForTask);
+
+    
+router.get('/:id', controller.handleGetRequestForTask);
 
 module.exports = router;
 

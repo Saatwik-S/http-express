@@ -1,11 +1,10 @@
-const { handleDeleteRequestForTask, handleDeleteRequestForCompletedTasks } = require('../functions/tasks/deleteTask');
-const { handlePatchRequestForTask } = require('../functions/tasks/updateTask');
 
 const router = require('express').Router();
-router.delete('/completed', handleDeleteRequestForCompletedTasks);
+const taskController = require('../controller/taskController');
+router.delete('/completed', taskController.handleDeleteRequestForCompletedTasks);
 
 
 router.route('/:id')
-	.delete(handleDeleteRequestForTask)
-	.patch(handlePatchRequestForTask);
+    .delete(taskController.handleDeleteRequestForTask)
+    .patch(taskController.handlePatchRequestForTask);
 module.exports = router;
