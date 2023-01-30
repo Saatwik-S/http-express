@@ -1,4 +1,4 @@
-const { tasks, updateObject } =   require('../../../util/tasks');
+const { tasks, updateObject } =   require('../../util/tasks');
 
 
 

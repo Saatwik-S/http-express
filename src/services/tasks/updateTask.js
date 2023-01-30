@@ -1,5 +1,5 @@
 
-const { tasks } =   require('../../../util/tasks');
+const { tasks } =   require('../../util/tasks');
 
 
 /**

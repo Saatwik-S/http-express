@@ -1,4 +1,4 @@
-const { getNewTaskID, tasks } = require('../../../util/tasks');
+const { getNewTaskID, tasks } = require('../../util/tasks');
 
 
 /**
