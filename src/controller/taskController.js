@@ -8,24 +8,14 @@
 const taskService = require('../services/taskService')
 const joi = require('joi')
 const HTTPError = require('../util/errors/HTTPError')
+const responseErrorHandler = require('../util/errors/responseErrorHandler')
 const handlePostRequestForTask = async (request, response) => {
   try {
-    const schema = joi.object({
-      name: joi.string().alphanum().min(1).max(1000).required()
-    })
-    const { error, value } = schema.validate(request.body)
-    if (error) {
-      throw new HTTPError(error.message, 400)
-    }
-
     const task = await taskService.addTask(request.body)
 
     response.status(201).send(task)
   } catch (error) {
-    if (error instanceof HTTPError) {
-      response.status(error.code).json({ message: error.message })
-    }
-    // response.status(400).send(error.toString())
+    response.status(500).json({ message: 'Oops Something broke' })
   }
 }
 
@@ -60,12 +50,20 @@ const handleDeleteRequestForTask = async (request, response) => {
  */
 const handleGetRequestForTask = async (request, response) => {
   try {
-    const task = request.params.id !== undefined ? await taskService.fetchTask(parseInt(request.params.id), false) : await taskService.fetchTask(undefined, true)
+    const schema = joi.object({
+      id: joi.number()
+    })
+
+    const { error } = schema.validate(request.params)
+    if (error) throw new HTTPError(error.message, 400)
+    const id = request.params.id
+    const task = id !== undefined ? await taskService.fetchTask(id, false) : await taskService.fetchTask(undefined, true)
     response.json(task)
   } catch (error) {
     if (error instanceof HTTPError) {
       response.status(error.code).json({ message: error.message })
     } else {
+      console.log(error)
       response.status(500).json({ message: 'Something Broke.. Internal Server Error' })
     }
   }
@@ -73,12 +71,10 @@ const handleGetRequestForTask = async (request, response) => {
 const handlePatchRequestForTask = async (request, response) => {
   try {
     const id = request.params.id
-
     const task = await taskService.updateTask(parseInt(id), request.query)
-    response.send((task))
+    response.send(task)
   } catch (error) {
-    response.status(403)
-      .send(error.toString())
+    responseErrorHandler(response, error)
   }
 }
 

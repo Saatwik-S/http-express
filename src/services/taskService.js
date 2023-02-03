@@ -10,10 +10,7 @@ const HTTPError = require('../util/errors/HTTPError')
  * @returns The last element of the tasks array.
  */
 const addTask = async (taskInfo) => {
-  if (!taskInfo.name) throw new Error('Missing Task Key')
-  if (taskInfo.name.toString().length === 0) throw new Error('Task name missing')
-  const taskInstance = task(db.sequelize, DataTypes)
-  const data = await taskInstance.create({
+  const data = await db.Task.create({
     name: taskInfo.name,
     isComplete: false
   })
@@ -40,10 +37,6 @@ const deleteTask = async (id, deleteCompletedTasks) => {
     })
 
     return true
-  }
-
-  if (!id || typeof id !== 'number') {
-    throw new Error('Invalid ID Type')
   }
 
   await taskInstance.destroy({
@@ -75,7 +68,6 @@ const fetchTask = async (id, allTasks) => {
     })
     return data
   }
-  if (typeof (id) !== 'number') throw new Error('Invalid ID')
   const data = await taskInstance.findOne({
     where: {
       id: {
@@ -96,12 +88,8 @@ const fetchTask = async (id, allTasks) => {
  */
 
 const updateTask = async (id, dataToBeUpdated) => {
-  if (!id || typeof id !== 'number') {
-    throw new Error('Invalid ID Type')
-  }
-  if (!dataToBeUpdated.isCompleted) throw new Error('Variable not found')
   const taskInstance = task(db.sequelize, DataTypes)
-  const dataUpdated = await taskInstance.update({
+  const updatedTask = await taskInstance.update({
     isComplete: true
   }, {
     where: {
@@ -109,12 +97,7 @@ const updateTask = async (id, dataToBeUpdated) => {
     }
   })
 
-  if (dataUpdated[0] === 0) throw new Error('Task not found')
-  const updatedTask = await taskInstance.findOne({
-    where: {
-      id
-    }
-  })
+  if (updatedTask[0] === 0) throw new HTTPError('Task not found', 404)
 
   return updatedTask.dataValues
 }
