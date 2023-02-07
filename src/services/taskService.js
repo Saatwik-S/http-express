@@ -1,4 +1,4 @@
-const { DataTypes, Op } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const db = require('../../models/index')
 const task = require('../../models/task')
 const HTTPError = require('../util/errors/HTTPError')
@@ -9,10 +9,12 @@ const HTTPError = require('../util/errors/HTTPError')
  * @param taskInfo - This is the object that contains the task name.
  * @returns The last element of the tasks array.
  */
-const addTask = async (taskInfo) => {
-  const data = await db.Task.create({
+const addTask = async (userId, taskInfo) => {
+  const taskInstance = task(db.sequelize, DataTypes)
+  const data = await taskInstance.create({
     name: taskInfo.name,
-    isComplete: false
+    isComplete: false,
+    userId
   })
   return data.dataValues
 }
@@ -24,15 +26,13 @@ const addTask = async (taskInfo) => {
  * @returns A boolean value
  */
 
-const deleteTask = async (id, deleteCompletedTasks) => {
+const deleteTask = async (userId, id, deleteCompletedTasks) => {
   const taskInstance = task(db.sequelize, DataTypes)
   if (deleteCompletedTasks) {
     await taskInstance.destroy({
       where: {
-
-        isComplete: {
-          [Op.eq]: true
-        }
+        isComplete: true,
+        userId
       }
     })
 
@@ -41,9 +41,8 @@ const deleteTask = async (id, deleteCompletedTasks) => {
 
   await taskInstance.destroy({
     where: {
-      id: {
-        [Op.eq]: id
-      }
+      id,
+      userId
     }
   })
 
@@ -59,10 +58,14 @@ const deleteTask = async (id, deleteCompletedTasks) => {
  * @param allTasks - A boolean value that indicates whether to return all tasks or just one task.
  * @returns the task with the id that was passed in.
  */
-const fetchTask = async (id, allTasks) => {
+const fetchTask = async (userId, id, allTasks) => {
   const taskInstance = task(db.sequelize, DataTypes)
   if (allTasks) {
-    const data = await taskInstance.findAll()
+    const data = await taskInstance.findAll({
+      where: {
+        userId
+      }
+    })
     data.forEach((val, index) => {
       data[index] = val.dataValues
     })
@@ -70,13 +73,11 @@ const fetchTask = async (id, allTasks) => {
   }
   const data = await taskInstance.findOne({
     where: {
-      id: {
-        [Op.eq]: id
-      }
+      id,
+      userId
     }
   })
-  if (data == null) throw new HTTPError('Task not found', 404)
-  return data.dataValues
+  return data === null ? {} : data.dataValues
 }
 
 /**
@@ -87,13 +88,14 @@ const fetchTask = async (id, allTasks) => {
  * @returns task as the index
  */
 
-const updateTask = async (id, dataToBeUpdated) => {
+const updateTask = async (userId, id) => {
   const taskInstance = task(db.sequelize, DataTypes)
   const updatedTask = await taskInstance.update({
     isComplete: true
   }, {
     where: {
-      id
+      id,
+      userId
     }
   })
 

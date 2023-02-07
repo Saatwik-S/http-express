@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize')
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, Sequelize) => {
   class Task extends Model {
     /**
      * Helper method for defining associations.
@@ -14,8 +14,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Task.init({
-    name: DataTypes.STRING,
-    isComplete: DataTypes.BOOLEAN
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER
+    },
+    name: {
+      type: Sequelize.STRING
+    },
+    isComplete: {
+      type: Sequelize.BOOLEAN
+    },
+    userId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    }
   }, {
     sequelize,
     modelName: 'Task'
