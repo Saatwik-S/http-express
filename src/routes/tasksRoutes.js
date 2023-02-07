@@ -1,12 +1,19 @@
 
 const controller = require('../controller/taskController')
-const {validators, schemas} = require('../util/validators')
+const { verifyUser } = require('../util/middleware/auth')
+const { validate, schemas, REQ_PARAMTERS } = require('../util/middleware/validators')
 const router = require('express').Router()
-
 router.route('/')
-  .get(controller.handleGetRequestForTask)
-  .post(validators.bodyValidator(schemas.newTaskSchema), controller.handlePostRequestForTask)
+  .get(
+    verifyUser,
+    controller.handleGetRequestForTask)
+  .post(
+    verifyUser,
+    validate(schemas.newTaskSchema, REQ_PARAMTERS.BODY),
+    controller.handlePostRequestForTask)
 
-router.get('/:id', controller.handleGetRequestForTask)
+router.get('/:id',
+  verifyUser,
+  controller.handleGetRequestForTask)
 
 module.exports = router
